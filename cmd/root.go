@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var logFormat string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ipchecker [list.txt]",
@@ -19,6 +21,13 @@ var rootCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		file := args[0]
 		return checker.Run(file)
+	},
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		error := checker.InitLogger(logFormat)
+		if error != nil {
+			panic(error)
+		}
+		return nil
 	},
 }
 
@@ -41,5 +50,10 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().StringVar()
+	rootCmd.PersistentFlags().StringVar(
+		&logFormat,
+		"log-format",
+		"json",
+		"Log format. Supported formats: json, text",
+	)
 }
