@@ -11,6 +11,7 @@ import (
 )
 
 var logFormat string
+var validate bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -55,5 +56,11 @@ func init() {
 		"log-format",
 		"json",
 		"Log format. Supported formats: json, text",
+	)
+	rootCmd.PersistentFlags().BoolVar(
+		&validate,
+		"vaildate",
+		false,
+		"Validate IPs & Host names",
 	)
 }

@@ -24,10 +24,7 @@ func Run(path string) error {
 		if ip == "" {
 			continue
 		}
-		if !validateIp(ip) {
-			logger.Error("Ip is not valid", zap.String("ip", ip))
-			continue
-		}
+
 		if !make_request(ip) {
 			logger.Info("Host is not reachable", zap.String("ip", ip))
 			continue
