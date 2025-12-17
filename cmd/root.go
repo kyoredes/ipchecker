@@ -57,10 +57,4 @@ func init() {
 		"json",
 		"Log format. Supported formats: json, text",
 	)
-	rootCmd.PersistentFlags().BoolVar(
-		&validate,
-		"vaildate",
-		false,
-		"Validate IPs & Host names",
-	)
 }
