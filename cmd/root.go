@@ -11,7 +11,8 @@ import (
 )
 
 var logFormat string
-var validate bool
+var isValidate bool
+var isIcmp bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -21,7 +22,11 @@ var rootCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		file := args[0]
-		return checker.Run(file)
+		config := checker.Config{
+			Validate: isValidate,
+			Icmp:     isIcmp,
+		}
+		return checker.Run(file, config)
 	},
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		error := checker.InitLogger(logFormat)
@@ -56,5 +61,17 @@ func init() {
 		"log-format",
 		"json",
 		"Log format. Supported formats: json, text",
+	)
+	rootCmd.PersistentFlags().BoolVar(
+		&isValidate,
+		"validate",
+		false,
+		"Validate IPs",
+	)
+	rootCmd.PersistentFlags().BoolVar(
+		&isIcmp,
+		"icmp",
+		false,
+		"Use ICMP instead of TCP",
 	)
 }
